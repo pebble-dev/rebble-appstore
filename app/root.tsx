@@ -5,10 +5,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useMatches,
+  NavLink,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import Logo from "./icons/rebble.svg?react";
+import Search from "./icons/search.svg?react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,6 +28,13 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const matches = useMatches();
+  const match = matches.at(-1);
+  const type = match.handle?.type?.(match.loaderData) ?? 'watchapp';
+  const watchappsLink = `/watchapps`;
+  const watchfacesLink = `/watchfaces`;
+  const searchLink = `/search/${type}s/1`;
+
   return (
     <html lang="en">
       <head>
@@ -33,7 +44,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <header>
+          <brand>
+            <Logo/>
+            <span>Rebble</span>
+            <span class="small">appstore</span>
+          </brand>
+          <nav>
+            <NavLink to={watchappsLink} class={ type === 'watchapp' ? "active" : "" }>Watch apps</NavLink>
+            <NavLink to={watchfacesLink} class={ type === 'watchface' ? "active" : "" }>Watch faces</NavLink>
+          </nav>
+          <div class="search"><NavLink to={searchLink}><Search/></NavLink></div>
+        </header>
+        <content>
+          {children}
+        </content>
         <ScrollRestoration />
         <Scripts />
       </body>

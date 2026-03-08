@@ -46,9 +46,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <header>
           <brand>
-            <Logo/>
-            <span>Rebble</span>
-            <span class="small">appstore</span>
+            <NavLink to={watchappsLink}>
+              <Logo/>
+              <span>Rebble</span>
+              <span class="small">appstore</span>
+            </NavLink>
           </brand>
           <nav>
             <NavLink to={watchappsLink} class={ type === 'watchapp' ? "active" : "" }>Watch apps</NavLink>

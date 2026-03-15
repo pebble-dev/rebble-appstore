@@ -3,6 +3,7 @@ import Markdown from 'react-markdown'
 import type { Route } from "./+types/Watchapps";
 import Carousel from "../components/carousel.tsx";
 import AppCard from "../components/app_card.tsx";
+import { mergeMeta } from "../utils/meta.ts"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/apps`);
@@ -14,6 +15,12 @@ export const handle = {
   type: () => 'watchapp',
 };
 
+export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
+  { title: "Watch apps | Rebble Appstore" },
+  { name: "og:title", content: "Watch apps" },
+  { name: "og:description", content: "Browse the watch apps on the Rebble Appstore" },
+]);
+
 export default function Watchapps({
   loaderData,
 }: Route.ComponentProps) {
@@ -24,9 +31,6 @@ export default function Watchapps({
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <title>{ `Apps` }</title>,
-    <meta name="test" content="test" />,
-
     <div class="home-page">
       { loaderData.banners.length > 0 &&
         <Carousel>
@@ -42,7 +46,7 @@ export default function Watchapps({
       <div class="categories">
         { loaderData.categories.map((category) => {
           return (
-            <NavLink to={ `/category/${category.slug}` } key={category.slug} class="category" style={ { backgroundColor: `rgb(from #${category.color} r g b / 50%)` } }>
+            <NavLink to={ `/category/${category.slug}` } key={category.slug} style={ { backgroundColor: `rgb(from #${category.color} r g b / 50%)` } }>
               <img src={ category.icon['88x88'] }/>
               {category.name}
             </NavLink>
@@ -52,10 +56,12 @@ export default function Watchapps({
       { loaderData.collections.map((collection) => {
         return (
           <div class="collection" key={collection.slug}>
-            <NavLink to={`/collection/${collection.slug}/apps/1`} class="name">
-              <h2>{collection.name}</h2>
-              <span>See more</span>
-            </NavLink>
+            <div class="name">
+              <NavLink to={`/collection/${collection.slug}/apps/1`}>
+                <h2>{collection.name}</h2>
+                <span>See more</span>
+              </NavLink>
+            </div>
             <div class="apps">
               { collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
@@ -78,7 +84,7 @@ export default function Watchapps({
           gap: 2rem;
           grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr
         }
-        .home-page .categories .category {
+        .home-page .categories a {
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -100,13 +106,13 @@ export default function Watchapps({
           border-radius: 2rem;
           margin-top: 2rem;
         }
-        .home-page .collection .name {
+        .home-page .collection .name a {
           display: flex;
           justify-content: space-between;
           align-items: center;
           text-decoration: none;
         }
-        .home-page .collection .name h2 {
+        .home-page .collection .name a h2 {
           margin: 0;
           color: var(--as-fg-primary)
         }

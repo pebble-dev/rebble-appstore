@@ -2,6 +2,7 @@ import { NavLink, Link, data } from 'react-router';
 import Markdown from 'react-markdown'
 import type { Route } from "./+types/application";
 import Carousel from "../components/carousel.tsx";
+import { mergeMeta } from "../utils/meta.ts"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/id/${params.applicationId}`);
@@ -16,23 +17,28 @@ export const handle = {
   type: (loaderData) => loaderData ? loaderData.type : '',
 };
 
+export const meta: Route.MetaFunction = ({ matches, loaderData }) => mergeMeta(matches, [
+  { title: `${loaderData.title} | Rebble Appstore` },
+  { name: "og:title", content: loaderData.title },
+  { name: "og:description", content: loaderData.description },
+]);
+
 export default function Application({
   loaderData,
 }: Route.ComponentProps) {
   const changelogLink = `/application/${loaderData.id}/changelog`;
   const developerLink = `/developer/${loaderData.developer_id}`;
   return (
-    <title>{ `${loaderData.title} | Watchapps` }</title>,
-    <meta name="test" content="test" />,
-
     <div class="application-page">
-      <Carousel>
-      { loaderData.header_images.map((banner) => {
-        return (
-          <img draggable="false"  class="banner" key={banner['720x320']} src={ banner['720x320'] }/>
-        );
-      }) }
-      </Carousel>
+      { loaderData.header_images &&
+        <Carousel>
+        { loaderData.header_images.map((banner) => {
+          return (
+            <img draggable="false"  class="banner" key={banner['720x320']} src={ banner['720x320'] }/>
+          );
+        }) }
+        </Carousel>
+      }
       <div class="application-header">
         {loaderData.type == 'watchapp' && <img src={loaderData.list_image['144x144']} />}
         <div>
@@ -51,12 +57,12 @@ export default function Application({
             );
           }) }
 
-          <div>
+          <div class="card">
             <h3>About</h3>
             <Markdown>{loaderData.description}</Markdown>
           </div>
 
-          <div>
+          <div class="card">
             <h3>What's new?</h3>
             <h4>{loaderData.latest_release.version}</h4>
             {loaderData.latest_release.published_date}
@@ -66,7 +72,7 @@ export default function Application({
         </div>
 
         <div class="application-side">
-          <div>
+          <div class="card">
             <h3>Links</h3>
             <p><Link to={loaderData.website}>Website</Link></p>
             <p><Link to={loaderData.source}>Source Code</Link></p>
@@ -96,6 +102,7 @@ export default function Application({
         }
         .application-content {
           display: flex;
+          gap: 2rem;
         }
         .application-content .application-main {
           width: 75%;

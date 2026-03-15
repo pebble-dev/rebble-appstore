@@ -1,6 +1,7 @@
-import { NavLink } from 'react-router';
+import { NavLink, Route } from 'react-router';
 import type { Route } from "./+types/Collection";
 import AppCard from "../components/app_card.tsx";
+import { mergeMeta } from "../utils/meta.ts"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/collection/${params.collectionSlug}/${params.type}`);
@@ -12,6 +13,12 @@ export const handle = {
   type: (loaderData) => (loaderData && loaderData.length > 1) ? loaderData[0].type : '',
 };
 
+export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
+  { title: "Collection | Rebble Appstore" },
+  { name: "og:title", content: "Collection" },
+  { name: "og:description", content: "Browse the collection on the Rebble Appstore" },
+]);
+
 export default function Collection({
   loaderData,
 }: Route.ComponentProps) {
@@ -22,9 +29,6 @@ export default function Collection({
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <title>{ `Collection` }</title>,
-    <meta name="test" content="test" />,
-
     <div class="collection-page">
       <div class="apps">
         { loaderData.map((application) => {

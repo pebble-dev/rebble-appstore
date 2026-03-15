@@ -27,6 +27,14 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export const meta: Route.MetaFunction = () => [
+  { title: "Rebble Appstore" },
+  { name: "og:site_name", content: "Rebble Appstore" },
+  { name: "og:title", content: "Appstore" },
+  { name: "og:description", content: "Find your favourite apps and faces on the Rebble Appstore!" },
+  { name: "og:image", content: "" },
+];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches();
   const match = matches.at(-1);
@@ -53,8 +61,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </NavLink>
           </brand>
           <nav>
-            <NavLink to={watchappsLink} class={ type === 'watchapp' ? "active" : "" }>Watch apps</NavLink>
-            <NavLink to={watchfacesLink} class={ type === 'watchface' ? "active" : "" }>Watch faces</NavLink>
+            <nav-item class={ type === 'watchapp' ? "active" : "" }><NavLink to={watchappsLink}>Watch apps</NavLink></nav-item>
+            <nav-item class={ type === 'watchface' ? "active" : "" }><NavLink to={watchfacesLink}>Watch faces</NavLink></nav-item>
           </nav>
           <div class="search"><NavLink to={searchLink}><Search/></NavLink></div>
         </header>

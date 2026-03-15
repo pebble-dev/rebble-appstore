@@ -17,6 +17,9 @@ export default function AppCard({ info }) {
         </div>
       </NavLink>
       <style>{`
+        .app-card {
+          min-width: 0px;
+        }
         .app-card a {
           display: flex;
           flex-direction: column;
@@ -31,9 +34,15 @@ export default function AppCard({ info }) {
         }
         .app-card a .info {
           text-align: center;
+          max-width: 100%
         }
         .app-card a .info .title {
           font-weight: 600;
+        }
+        .app-card a .info .author {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .app-card a .info .hearts {
           color: var(--as-fg-muted)

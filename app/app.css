@@ -98,12 +98,12 @@ header nav a {
   border-radius: 0.5rem;
 }
 
-header nav a.active {
+header nav .active a {
   background-color: var(--as-brand);
   color: var(--as-brand-fg);
 }
 
-header nav a.active:hover {
+header nav .active a:hover {
   background-color: var(--as-brand-secondary);
   color: var(--as-brand-fg);
 }
@@ -128,4 +128,12 @@ content {
   padding: 1rem;
   display: block;
   margin: auto;
+}
+
+.card {
+  display: block;
+  background-color: var(--as-bg-secondary);
+  padding: 1rem 2rem;
+  margin-top: 1rem;
+  border-radius: 2rem;
 }

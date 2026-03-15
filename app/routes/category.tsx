@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router';
 import type { Route } from "./+types/Category";
 import AppCard from "../components/app_card.tsx";
+import { mergeMeta } from "../utils/meta.ts"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/category/${params.categorySlug}?sort=${params.sort}`);
@@ -11,6 +12,12 @@ export async function loader({ params }: Route.LoaderArgs) {
 export const handle = {
   type: () => 'watchapp',
 };
+
+export const meta: Route.MetaFunction = ({ matches, loaderData }) => mergeMeta(matches, [
+  { title: `${loaderData[0].category} Category | Rebble Appstore` },
+  { name: "og:title", content: `${loaderData[0].category} Category` },
+  { name: "og:description", content: "Browse the category on the Rebble Appstore" },
+]);
 
 export default function Category({
   loaderData,
@@ -23,9 +30,6 @@ export default function Category({
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <title>{ `Category` }</title>,
-    <meta name="test" content="test" />,
-
     <div class="category-page">
       <div class="switcher">
         <NavLink to={ `/category/${params.categorySlug}/hearts/1` }>Most Loved</NavLink>

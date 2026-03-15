@@ -68,7 +68,7 @@ export default function Carousel({ children }) {
             onPointerLeave={onPointerUp}
           >
             {children.map((img, i) => (
-              <div key={i} ref={el => slideRefs.current[i] = el} class="carousel-slide">
+              <div key={i} ref={el => slideRefs.current[i] = el} class={ `carousel-slide ${ current == i ? 'current' : '' }` }>
                 { children[i] }
               </div>
             ))}
@@ -109,7 +109,15 @@ export default function Carousel({ children }) {
         }
         .carousel-slide {
           flex-shrink: 0;
-          max-width: 100%
+          max-width: 100%;
+          transition: 1s opacity;
+          will-change: opacity;
+        }
+        .carousel-slide:not(.current) {
+          opacity: 50%;
+        }
+        .carousel-slide.current {
+          opacity: 100%;
         }
         .carousel-dots {
           display: flex;

@@ -3,6 +3,7 @@ import Markdown from 'react-markdown'
 import type { Route } from "./+types/Watchfaces";
 import Carousel from "../components/carousel.tsx";
 import AppCard from "../components/app_card.tsx";
+import { mergeMeta } from "../utils/meta.ts"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/faces`);
@@ -14,6 +15,12 @@ export const handle = {
   type: () => 'watchface',
 };
 
+export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
+  { title: "Watch faces | Rebble Appstore" },
+  { name: "og:title", content: "Watch faces" },
+  { name: "og:description", content: "Browse the watch faces on the Rebble Appstore" },
+]);
+
 export default function Watchfaces({
   loaderData,
 }: Route.ComponentProps) {
@@ -24,9 +31,6 @@ export default function Watchfaces({
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <title>{ `Watchfaces` }</title>,
-    <meta name="test" content="test" />,
-
     <div class="home-page">
       { loaderData.banners.length > 0 &&
         <Carousel>
@@ -42,10 +46,12 @@ export default function Watchfaces({
       { loaderData.collections.map((collection) => {
         return (
           <div class="collection" key={collection.slug}>
-            <NavLink to={`/collection/${collection.slug}/faces/1`} class="name">
-              <h2>{collection.name}</h2>
-              <span>See more</span>
-            </NavLink>
+            <div class="name">
+              <NavLink to={`/collection/${collection.slug}/faces/1`}>
+                <h2>{collection.name}</h2>
+                <span>See more</span>
+              </NavLink>
+            </div>
             <div class="apps">
               { collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
@@ -72,13 +78,13 @@ export default function Watchfaces({
           border-radius: 2rem;
           margin-top: 2rem;
         }
-        .home-page .collection .name {
+        .home-page .collection .name a {
           display: flex;
           justify-content: space-between;
           align-items: center;
           text-decoration: none;
         }
-        .home-page .collection .name h2 {
+        .home-page .collection .name a h2 {
           margin: 0;
           color: var(--as-fg-primary)
         }

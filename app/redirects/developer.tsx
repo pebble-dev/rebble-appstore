@@ -1,5 +1,5 @@
 import { redirect } from 'react-router';
 
 export function loader({ params }) {
-  return redirect(`/developer/${params.developerId}`);
+  return redirect(`/developer/${params.developerId}/1`);
 }

@@ -1,87 +1,86 @@
-# Welcome to React Router!
+# Rebble Appstore
 
-A modern, production-ready template for building full-stack React applications using React Router.
+The Rebble Appstore is a community-built replacement for the original Pebble app store, which went offline when Pebble was shut down. It allows Pebble smartwatch users to continue browsing, discovering, and sideloading apps and watchfaces onto their devices via the [Rebble](https://rebble.io) ecosystem.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+This repository contains the frontend web application. It talks to the [rebble-appstore-api](https://github.com/pebble-dev/rebble-appstore-api) backend and integrates with [rebble-auth-py](https://github.com/pebble-dev/rebble-auth-py) for authentication.
 
-## Features
+## Tech stack
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- [React Router v7](https://reactrouter.com/) — full-stack React framework with server-side rendering
+- [TypeScript](https://www.typescriptlang.org/) — throughout
+- [Tailwind CSS](https://tailwindcss.com/) — for styling
+- [Vite](https://vitejs.dev/) — bundler and dev server
+- [Docker](https://www.docker.com/) — for containerised deployment
 
-## Getting Started
+## Getting started
 
-### Installation
+### Prerequisites
 
-Install the dependencies:
+- [Node.js](https://nodejs.org/) v18 or later
+- npm (comes with Node.js)
+
+### Local development
 
 ```bash
+# Clone the repository
+git clone https://github.com/pebble-dev/rebble-appstore.git
+cd rebble-appstore
+
+# Install dependencies
 npm install
-```
 
-### Development
-
-Start the development server with HMR:
-
-```bash
+# Start the development server with hot module replacement
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+The app will be available at `http://localhost:5173`.
 
-## Building for Production
-
-Create a production build:
+### Production build
 
 ```bash
 npm run build
 ```
 
-## Deployment
+The output will be in the `build/` directory:
 
-### Docker Deployment
+```
+build/
+├── client/    # Static assets
+└── server/    # Server-side code
+```
 
-To build and run using Docker:
+### Docker
 
 ```bash
-docker build -t my-app .
+# Build the image
+docker build -t rebble-appstore .
 
 # Run the container
-docker run -p 3000:3000 my-app
+docker run -p 3000:3000 rebble-appstore
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+The containerised app will be available at `http://localhost:3000`.
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+## Related repositories
 
-### DIY Deployment
+| Repository | Description |
+|---|---|
+| [rebble-appstore-api](https://github.com/pebble-dev/rebble-appstore-api) | Backend API that serves app and watchface data |
+| [rebble-auth-py](https://github.com/pebble-dev/rebble-auth-py) | Authentication service (auth.rebble.io) |
+| [rebble-dev-portal](https://github.com/pebble-dev/rebble-dev-portal) | Developer portal for submitting apps to the store |
+| [mobile-app](https://github.com/pebble-dev/mobile-app) | Cobble: the Rebble companion app for iOS and Android |
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
+## Contributing
 
-Make sure to deploy the output of `npm run build`
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to get involved. All contributions are welcome — from fixing typos to tackling open issues.
 
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
+## Community
 
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+- Discord: [rebble.io/discord](https://discordapp.com/invite/aRUAYFN)
+- Mastodon: [@rebble@mastodon.social](https://mastodon.social/@rebble)
+- Bluesky: [@rebble.io](https://bsky.app/profile/rebble.io)
+- Website: [rebble.io](https://rebble.io)
 
 ---
 
-Built with ❤️ using React Router.
+Built with ❤️ using [React Router](https://reactrouter.com/).

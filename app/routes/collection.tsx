@@ -1,9 +1,13 @@
 import { NavLink } from 'react-router';
 import type { Route } from "./+types/Collection";
 import AppCard from "../components/app_card.tsx";
+import { getSettings, buildApiQuery } from "../cookies";
 
-export async function loader({ params }: Route.LoaderArgs) {
-  const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/collection/${params.collectionSlug}/${params.type}`);
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const settings = getSettings(request);
+  const query = buildApiQuery(settings);
+  const url = `https://appstore-api.rebble.io/api/v1/apps/collection/${params.collectionSlug}/${params.type}${query ? `?${query}` : ''}`;
+  const res = await fetch(url);
   const collection = await res.json();
   return collection.data;
 }

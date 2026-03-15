@@ -3,9 +3,13 @@ import Markdown from 'react-markdown'
 import type { Route } from "./+types/Watchfaces";
 import Carousel from "../components/carousel.tsx";
 import AppCard from "../components/app_card.tsx";
+import { getSettings, buildApiQuery } from "../cookies";
 
-export async function loader({ params }: Route.LoaderArgs) {
-  const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/faces`);
+export async function loader({ params, request }: Route.LoaderArgs) {
+  const settings = getSettings(request);
+  const query = buildApiQuery(settings);
+  const url = `https://appstore-api.rebble.io/api/v1/home/faces${query ? `?${query}` : ''}`;
+  const res = await fetch(url);
   const watchfaces = await res.json();
   return watchfaces;
 }

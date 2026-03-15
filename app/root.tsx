@@ -7,12 +7,15 @@ import {
   ScrollRestoration,
   useMatches,
   NavLink,
+  useRouteLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import Logo from "./icons/rebble.svg?react";
 import Search from "./icons/search.svg?react";
+import QuickSettings from "./components/quick_settings";
+import { getSettings } from "./cookies";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -27,6 +30,10 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export async function loader({ request }: Route.LoaderArgs) {
+  return getSettings(request);
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches();
   const match = matches.at(-1);
@@ -35,8 +42,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const watchfacesLink = `/watchfaces`;
   const searchLink = `/search/${type}s/1`;
 
+  const settings = useRouteLoaderData("root") as { hardware: string; platform: string; language: string } | undefined;
+  const hardware = settings?.hardware ?? '';
+  const platform = settings?.platform ?? '';
+  const language = settings?.language ?? '';
+
   return (
-    <html lang="en">
+    <html lang={language || "en"}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -56,7 +68,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink to={watchappsLink} class={ type === 'watchapp' ? "active" : "" }>Watch apps</NavLink>
             <NavLink to={watchfacesLink} class={ type === 'watchface' ? "active" : "" }>Watch faces</NavLink>
           </nav>
-          <div class="search"><NavLink to={searchLink}><Search/></NavLink></div>
+          <div class="header-actions">
+            <NavLink to={searchLink} class="search-link"><Search/></NavLink>
+            <QuickSettings hardware={hardware} platform={platform} language={language} />
+          </div>
         </header>
         <content>
           {children}

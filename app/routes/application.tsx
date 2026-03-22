@@ -29,17 +29,17 @@ export default function Application({
   const changelogLink = `/application/${loaderData.id}/changelog`;
   const developerLink = `/developer/${loaderData.developer_id}`;
   return (
-    <div class="application-page">
+    <div className="application-page">
       { loaderData.header_images &&
         <Carousel>
         { loaderData.header_images.map((banner) => {
           return (
-            <img draggable="false"  class="banner" key={banner['720x320']} src={ banner['720x320'] }/>
+            <img draggable="false"  className="banner" key={banner['720x320']} src={ banner['720x320'] }/>
           );
         }) }
         </Carousel>
       }
-      <div class="application-header">
+      <div className="application-header">
         {loaderData.type == 'watchapp' && <img src={loaderData.list_image['144x144']} />}
         <div>
           <h1>{loaderData.title}</h1>
@@ -48,8 +48,8 @@ export default function Application({
       </div>
 
 
-      <div class="application-content">
-        <div class="application-main">
+      <div className="application-content">
+        <div className="application-main">
           {/* Figure out the screenshots component, also hardcoded resolution */}
           { loaderData.screenshot_images.map((screenshot) => {
             return (
@@ -57,12 +57,12 @@ export default function Application({
             );
           }) }
 
-          <div class="card">
+          <div className="card">
             <h3>About</h3>
             <Markdown>{loaderData.description}</Markdown>
           </div>
 
-          <div class="card">
+          <div className="card">
             <h3>What's new?</h3>
             <h4>{loaderData.latest_release.version}</h4>
             {loaderData.latest_release.published_date}
@@ -71,8 +71,8 @@ export default function Application({
           </div>
         </div>
 
-        <div class="application-side">
-          <div class="card">
+        <div className="application-side">
+          <div className="card">
             <h3>Links</h3>
             <p><Link to={loaderData.website}>Website</Link></p>
             <p><Link to={loaderData.source}>Source Code</Link></p>

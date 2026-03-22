@@ -1,67 +1,67 @@
-import { NavLink, Link, data } from 'react-router';
-import Markdown from 'react-markdown'
-import type { Route } from "./+types/Watchfaces";
-import Carousel from "../components/carousel.tsx";
-import AppCard from "../components/app_card.tsx";
-import { mergeMeta } from "../utils/meta.ts"
+import { NavLink, type UIMatch } from 'react-router';
+import type { Route } from "/+types/Watchfaces";
+import Carousel from '~/components/carousel.js';
+import AppCard from '~/components/app_card.js';
+import { mergeMeta } from '~/utils/meta';
 
-export async function loader({ params }: Route.LoaderArgs) {
-  const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/faces`);
-  const watchfaces = await res.json();
-  return watchfaces;
+export async function loader() {
+	const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/faces`);
+	const watchfaces = await res.json();
+	return watchfaces;
 }
 
 export const handle = {
-  type: () => 'watchface',
+	type: () => 'watchface',
 };
 
-export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
-  { title: "Watch faces | Rebble Appstore" },
-  { name: "og:title", content: "Watch faces" },
-  { name: "og:description", content: "Browse the watch faces on the Rebble Appstore" },
-]);
+export const meta: Route.MetaFunction = ({ matches }: { matches: UIMatch[] }) =>
+	mergeMeta(matches, [
+		{ title: "Watch faces | Rebble Appstore" },
+		{ name: "og:title", content: "Watch faces" },
+		{ name: "og:description", content: "Browse the watch faces on the Rebble Appstore" },
+	]);
 
 export default function Watchfaces({
-  loaderData,
+	loaderData,
 }: Route.ComponentProps) {
-  const applicationLink = (applicationId) => {
-    return `/application/${applicationId}`;
-  };
-  const applicationById = (applicationId) => {
-    return loaderData.applications.find((application) => application.id == applicationId);
-  };
-  return (
-    <div class="home-page">
-      { loaderData.banners.length > 0 &&
-        <Carousel>
-        { loaderData.banners.map((banner) => {
-          return (
-            <NavLink to={applicationLink(banner.application_id)} key={banner.application_id}>
-              <img draggable="false"  class="banner" src={ banner.image['720x320'] }/>
-            </NavLink>
-          );
-        }) }
-      </Carousel>
-      }
-      { loaderData.collections.map((collection) => {
-        return (
-          <div class="collection" key={collection.slug}>
-            <div class="name">
-              <NavLink to={`/collection/${collection.slug}/faces/1`}>
-                <h2>{collection.name}</h2>
-                <span>See more</span>
-              </NavLink>
-            </div>
-            <div class="apps">
-              { collection.application_ids.slice(0, 6).map((applicationId) => {
-                const application = applicationById(applicationId);
-                return <AppCard info={application}/>
-              }) }
-            </div>
-          </div>
-        );
-      }) }
-      <style>{`
+	const applicationLink = (applicationId: string) => {
+		return `/application/${applicationId}`;
+	};
+	const applicationById = (applicationId) => {
+		return loaderData.applications.find((application) => application.id == applicationId);
+	};
+	return (
+		<div className="home-page">
+			{loaderData.banners.length > 0 &&
+				<Carousel>
+					{loaderData.banners.map((banner) => {
+						return (
+							<NavLink to={applicationLink(banner.application_id)} key={banner.application_id}>
+								<img draggable="false" className="banner" src={banner.image['720x320']} />
+							</NavLink>
+						);
+					})}
+				</Carousel>
+			}
+			{loaderData.collections.map((collection) => {
+				return (
+					<div className="collection" key={collection.slug}>
+						<div className="name">
+							<NavLink to={`/collection/${collection.slug}/faces/1`}>
+								<h2>{collection.name}</h2>
+								<span>See more</span>
+							</NavLink>
+						</div>
+						<div className="apps">
+							{collection.application_ids.slice(0, 6).map((applicationId) => {
+								const application = applicationById(applicationId);
+								return <AppCard info={application} />
+							})}
+						</div>
+					</div>
+				);
+			})}
+			<style>{`
         .home-page {
 
         }
@@ -104,6 +104,6 @@ export default function Watchfaces({
           }
         }
       `}</style>
-    </div>
-  );
+		</div>
+	);
 }

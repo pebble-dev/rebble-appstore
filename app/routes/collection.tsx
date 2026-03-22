@@ -29,8 +29,8 @@ export default function Collection({
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <div class="collection-page">
-      <div class="apps">
+    <div className="collection-page">
+      <div className="apps">
         { loaderData.map((application) => {
           return <AppCard info={application}/>
         }) }

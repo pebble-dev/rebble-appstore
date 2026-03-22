@@ -55,12 +55,12 @@ export default function Carousel({ children }) {
 
   return (
     <div>
-      <div class="carousel">
+      <div className="carousel">
 
-        <div class="carousel-viewport">
+        <div className="carousel-viewport">
           <div
             ref={el => containerRef.current = el}
-            class="carousel-track"
+            className="carousel-track"
             style={trackStyle}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -68,7 +68,7 @@ export default function Carousel({ children }) {
             onPointerLeave={onPointerUp}
           >
             {children.map((img, i) => (
-              <div key={i} ref={el => slideRefs.current[i] = el} class={ `carousel-slide ${ current == i ? 'current' : '' }` }>
+              <div key={i} ref={el => slideRefs.current[i] = el} className={ `carousel-slide ${ current == i ? 'current' : '' }` }>
                 { children[i] }
               </div>
             ))}
@@ -76,12 +76,12 @@ export default function Carousel({ children }) {
         </div>
 
         { children.length > 1 &&
-          <div class="carousel-dots">
+          <div className="carousel-dots">
             {children.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                class={ `carousel-dot ${ current == i ? 'current' : '' }` }
+                className={ `carousel-dot ${ current == i ? 'current' : '' }` }
               />
             ))}
           </div>

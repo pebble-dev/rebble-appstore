@@ -31,19 +31,19 @@ export default function Watchapps({
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <div class="home-page">
+    <div className="home-page">
       { loaderData.banners.length > 0 &&
         <Carousel>
         { loaderData.banners.map((banner) => {
           return (
             <NavLink to={applicationLink(banner.application_id)} key={banner.application_id}>
-              <img draggable="false"  class="banner" src={ banner.image['720x320'] }/>
+              <img draggable="false"  className="banner" src={ banner.image['720x320'] }/>
             </NavLink>
           );
         }) }
       </Carousel>
       }
-      <div class="categories">
+      <div className="categories">
         { loaderData.categories.map((category) => {
           return (
             <NavLink to={ `/category/${category.slug}` } key={category.slug} style={ { backgroundColor: `rgb(from #${category.color} r g b / 50%)` } }>
@@ -55,14 +55,14 @@ export default function Watchapps({
       </div>
       { loaderData.collections.map((collection) => {
         return (
-          <div class="collection" key={collection.slug}>
-            <div class="name">
+          <div className="collection" key={collection.slug}>
+            <div className="name">
               <NavLink to={`/collection/${collection.slug}/apps/1`}>
                 <h2>{collection.name}</h2>
                 <span>See more</span>
               </NavLink>
             </div>
-            <div class="apps">
+            <div className="apps">
               { collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
                 return <AppCard info={application}/>

@@ -32,11 +32,11 @@ export default function Developer({
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <div class="developer-page">
+    <div className="developer-page">
       <title>{ `${ loaderData[0].author } | Rebble Appstore` }</title>
       <meta name="test" content="test" />
 
-      <div class="apps">
+      <div className="apps">
         { loaderData.map((application) => {
           return <AppCard info={application}/>
         }) }

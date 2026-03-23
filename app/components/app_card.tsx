@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router';
 import Heart from "../icons/heart.svg?react";
+import type { ApplicationInfo } from "~/types/Application";
 
-export default function AppCard({ info }) {
-  const applicationLink = (applicationId) => {
+export default function AppCard({ info }: { info: ApplicationInfo }) {
+  const applicationLink = (applicationId: string) => {
     return `/application/${applicationId}`;
   };
   return (

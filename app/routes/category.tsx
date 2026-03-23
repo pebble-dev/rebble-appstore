@@ -37,6 +37,7 @@ export default function Category({
       </div>
       <div className="apps">
         {loaderData.map((application) => {
+          console.log("application: ", application);
           return <AppCard info={application} />
         })}
       </div>

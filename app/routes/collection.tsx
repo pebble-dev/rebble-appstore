@@ -31,9 +31,9 @@ export default function Collection({
   return (
     <div className="collection-page">
       <div className="apps">
-        { loaderData.map((application) => {
-          return <AppCard info={application}/>
-        }) }
+        {loaderData.map((application) => {
+          return <AppCard info={application} />
+        })}
       </div>
       <style>{`
         .collection-page {

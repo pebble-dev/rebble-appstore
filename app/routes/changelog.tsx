@@ -18,7 +18,7 @@ export const handle = {
 
 export const meta: Route.MetaFunction = ({ matches, loaderData }) => mergeMeta(matches, [
   { title: `${loaderData.title} Changelog | Rebble Appstore` },
-  { name: "og:title", content: `${loaderData.title} Changelog`},
+  { name: "og:title", content: `${loaderData.title} Changelog` },
   { name: "og:description", content: loaderData.description },
 ]);
 
@@ -29,14 +29,14 @@ export default function Changelog({
   return (
     <div>
       <h1>Changelog for <NavLink to={applicationLink}>{loaderData.title}</NavLink></h1>
-      { loaderData.changelog.map((change) => {
-      	return (
-      	  <div key={change.version}>
-      	    <h3>{change.version}</h3>
-      	    <p>{change.published_date}</p>
-      	    <Markdown>{change.release_notes}</Markdown>
-      	  </div>
-      	);
+      {loaderData.changelog.map((change) => {
+        return (
+          <div key={change.version}>
+            <h3>{change.version}</h3>
+            <p>{change.published_date}</p>
+            <Markdown>{change.release_notes}</Markdown>
+          </div>
+        );
       })}
     </div>
   );

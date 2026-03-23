@@ -8,12 +8,12 @@ export default function AppCard({ info }) {
   return (
     <div className="app-card">
       <NavLink to={applicationLink(info.id)}>
-        <img src={ info.type == 'watchapp' ? info.list_image['144x144'] : info.screenshot_images[0]['144x168'] }/>
+        <img src={info.type == 'watchapp' ? info.list_image['144x144'] : info.screenshot_images[0]['144x168']} />
         <div className="info">
-          <div className="title">{ info.title }</div>
-          <div className="author">by { info.author }</div>
-          { info.type == 'watchapp' && <div className="category" style={ { color: `#${info.category_color}` } }>{ info.category }</div> }
-          <div className="hearts"><Heart/> { info.hearts }</div>
+          <div className="title">{info.title}</div>
+          <div className="author">by {info.author}</div>
+          {info.type == 'watchapp' && <div className="category" style={{ color: `#${info.category_color}` }}>{info.category}</div>}
+          <div className="hearts"><Heart /> {info.hearts}</div>
         </div>
       </NavLink>
       <style>{`

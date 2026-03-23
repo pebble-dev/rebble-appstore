@@ -30,13 +30,13 @@ export default function Application({
   const developerLink = `/developer/${loaderData.developer_id}`;
   return (
     <div className="application-page">
-      { loaderData.header_images &&
+      {loaderData.header_images &&
         <Carousel>
-        { loaderData.header_images.map((banner) => {
-          return (
-            <img draggable="false"  className="banner" key={banner['720x320']} src={ banner['720x320'] }/>
-          );
-        }) }
+          {loaderData.header_images.map((banner) => {
+            return (
+              <img draggable="false" className="banner" key={banner['720x320']} src={banner['720x320']} />
+            );
+          })}
         </Carousel>
       }
       <div className="application-header">
@@ -51,11 +51,11 @@ export default function Application({
       <div className="application-content">
         <div className="application-main">
           {/* Figure out the screenshots component, also hardcoded resolution */}
-          { loaderData.screenshot_images.map((screenshot) => {
+          {loaderData.screenshot_images.map((screenshot) => {
             return (
-              <img src={ screenshot['144x168'] }/>
+              <img src={screenshot['144x168']} />
             );
-          }) }
+          })}
 
           <div className="card">
             <h3>About</h3>

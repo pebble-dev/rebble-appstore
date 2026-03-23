@@ -32,28 +32,28 @@ export default function Watchapps({
   };
   return (
     <div className="home-page">
-      { loaderData.banners.length > 0 &&
+      {loaderData.banners.length > 0 &&
         <Carousel>
-        { loaderData.banners.map((banner) => {
-          return (
-            <NavLink to={applicationLink(banner.application_id)} key={banner.application_id}>
-              <img draggable="false"  className="banner" src={ banner.image['720x320'] }/>
-            </NavLink>
-          );
-        }) }
-      </Carousel>
+          {loaderData.banners.map((banner) => {
+            return (
+              <NavLink to={applicationLink(banner.application_id)} key={banner.application_id}>
+                <img draggable="false" className="banner" src={banner.image['720x320']} />
+              </NavLink>
+            );
+          })}
+        </Carousel>
       }
       <div className="categories">
-        { loaderData.categories.map((category) => {
+        {loaderData.categories.map((category) => {
           return (
-            <NavLink to={ `/category/${category.slug}` } key={category.slug} style={ { backgroundColor: `rgb(from #${category.color} r g b / 50%)` } }>
-              <img src={ category.icon['88x88'] }/>
+            <NavLink to={`/category/${category.slug}`} key={category.slug} style={{ backgroundColor: `rgb(from #${category.color} r g b / 50%)` }}>
+              <img src={category.icon['88x88']} />
               {category.name}
             </NavLink>
           );
-        }) }
+        })}
       </div>
-      { loaderData.collections.map((collection) => {
+      {loaderData.collections.map((collection) => {
         return (
           <div className="collection" key={collection.slug}>
             <div className="name">
@@ -63,14 +63,14 @@ export default function Watchapps({
               </NavLink>
             </div>
             <div className="apps">
-              { collection.application_ids.slice(0, 6).map((applicationId) => {
+              {collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
-                return <AppCard info={application}/>
-              }) }
+                return <AppCard info={application} />
+              })}
             </div>
           </div>
         );
-      }) }
+      })}
       <style>{`
         .home-page {
 

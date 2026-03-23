@@ -33,13 +33,13 @@ export default function Developer({
   };
   return (
     <div className="developer-page">
-      <title>{ `${ loaderData[0].author } | Rebble Appstore` }</title>
+      <title>{`${loaderData[0].author} | Rebble Appstore`}</title>
       <meta name="test" content="test" />
 
       <div className="apps">
-        { loaderData.map((application) => {
-          return <AppCard info={application}/>
-        }) }
+        {loaderData.map((application) => {
+          return <AppCard info={application} />
+        })}
       </div>
       <style>{`
         .developer-page {

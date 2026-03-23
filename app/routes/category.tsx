@@ -4,43 +4,43 @@ import AppCard from "../components/app_card.tsx";
 import { mergeMeta } from "../utils/meta.ts"
 
 export async function loader({ params }: Route.LoaderArgs) {
-	const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/category/${params.categorySlug}?sort=${params.sort}`);
-	const category = await res.json();
-	return category.data;
+  const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/category/${params.categorySlug}?sort=${params.sort}`);
+  const category = await res.json();
+  return category.data;
 }
 
 export const handle = {
-	type: () => 'watchapp',
+  type: () => 'watchapp',
 };
 
 export const meta: Route.MetaFunction = ({ matches, loaderData }) => mergeMeta(matches, [
-	{ title: `${loaderData[0].category} Category | Rebble Appstore` },
-	{ name: "og:title", content: `${loaderData[0].category} Category` },
-	{ name: "og:description", content: "Browse the category on the Rebble Appstore" },
+  { title: `${loaderData[0].category} Category | Rebble Appstore` },
+  { name: "og:title", content: `${loaderData[0].category} Category` },
+  { name: "og:description", content: "Browse the category on the Rebble Appstore" },
 ]);
 
 export default function Category({
-	loaderData,
-	params,
+  loaderData,
+  params,
 }: Route.ComponentProps) {
-	const applicationLink = (applicationId: string) => {
-		return `/application/${applicationId}`;
-	};
-	const applicationById = (applicationId) => {
-		return loaderData.applications.find((application) => application.id == applicationId);
-	};
-	return (
-		<div className="category-page">
-			<div className="switcher">
-				<NavLink to={`/category/${params.categorySlug}/hearts/1`}>Most Loved</NavLink>
-				<NavLink to={`/category/${params.categorySlug}/updated/1`}>Recently Added</NavLink>
-			</div>
-			<div className="apps">
-				{loaderData.map((application) => {
-					return <AppCard info={application} />
-				})}
-			</div>
-			<style>{`
+  const applicationLink = (applicationId: string) => {
+    return `/application/${applicationId}`;
+  };
+  const applicationById = (applicationId) => {
+    return loaderData.applications.find((application) => application.id == applicationId);
+  };
+  return (
+    <div className="category-page">
+      <div className="switcher">
+        <NavLink to={`/category/${params.categorySlug}/hearts/1`}>Most Loved</NavLink>
+        <NavLink to={`/category/${params.categorySlug}/updated/1`}>Recently Added</NavLink>
+      </div>
+      <div className="apps">
+        {loaderData.map((application) => {
+          return <AppCard info={application} />
+        })}
+      </div>
+      <style>{`
         .category-page {
 
         }
@@ -81,6 +81,6 @@ export default function Category({
           }
         }
       `}</style>
-		</div>
-	);
+    </div>
+  );
 }

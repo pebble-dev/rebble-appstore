@@ -36,7 +36,7 @@ export default function Carousel({ children }) {
   };
 
   const currentWidth = () => {
-    const baseWidth =  slideRefs.current.slice(0, current).reduce((accumulator, currentValue) => accumulator + currentValue.getBoundingClientRect().width, 0);
+    const baseWidth = slideRefs.current.slice(0, current).reduce((accumulator, currentValue) => accumulator + currentValue.getBoundingClientRect().width, 0);
 
     if (current == children.length - 1) {
       return baseWidth + slideRefs.current[current]?.getBoundingClientRect().width - containerRef.current?.getBoundingClientRect().width;
@@ -68,20 +68,20 @@ export default function Carousel({ children }) {
             onPointerLeave={onPointerUp}
           >
             {children.map((img, i) => (
-              <div key={i} ref={el => slideRefs.current[i] = el} className={ `carousel-slide ${ current == i ? 'current' : '' }` }>
-                { children[i] }
+              <div key={i} ref={el => slideRefs.current[i] = el} className={`carousel-slide ${current == i ? 'current' : ''}`}>
+                {children[i]}
               </div>
             ))}
           </div>
         </div>
 
-        { children.length > 1 &&
+        {children.length > 1 &&
           <div className="carousel-dots">
             {children.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                className={ `carousel-dot ${ current == i ? 'current' : '' }` }
+                className={`carousel-dot ${current == i ? 'current' : ''}`}
               />
             ))}
           </div>
@@ -105,7 +105,7 @@ export default function Carousel({ children }) {
           user-select: none;
           -webkit-user-select: none;
           gap: 2rem;
-          ${ children.length == 1 && 'justify-content: center' }
+          ${children.length == 1 && 'justify-content: center' }
         }
         .carousel-slide {
           flex-shrink: 0;

@@ -1,5 +1,14 @@
 import * as Datetime from "react-datetime";
 
+export interface AppScreenshot {
+  "144x168": string
+}
+
+export interface AppBanner {
+  "720x320": string
+  orig: string
+}
+
 export interface AppLinks {
   add: string
   add_flag: string
@@ -72,10 +81,7 @@ export interface ApplicationInfo {
       screenshot: string
     }[]
   }[]
-  header_images: {
-    "720x320": string
-    orig: string
-  }[]
+  header_images: AppBanner[]
   hearts: number
   icon_image: { "28x28": string, "48x48": string }
   icon_resource_id: number
@@ -85,7 +91,7 @@ export interface ApplicationInfo {
   list_image: { "144x144": string, "80x80": string }
   published_date: Datetime
   screenshot_hardware: string
-  screenshot_images: { "144x168": string }[]
+  screenshot_images: AppScreenshot[]
   source: string | null
   title: string
   type: "watchapp" | "watchface"

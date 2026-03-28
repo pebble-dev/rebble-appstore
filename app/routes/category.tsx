@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router';
-import type { Route } from "./+types/Category";
-import AppCard from "../components/app_card.tsx";
-import { mergeMeta } from "../utils/meta.ts"
+import AppCard from "../components/app_card";
+import { mergeMeta } from "../utils/meta"
+import type { Route } from './+types/category.js';
+import type { Application } from '~/types/AppstoreApi';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/category/${params.categorySlug}?sort=${params.sort}`);
   const category = await res.json();
-  return category.data;
+  return category.data as Application[];
 }
 
 export const handle = {
@@ -23,12 +24,6 @@ export default function Category({
   loaderData,
   params,
 }: Route.ComponentProps) {
-  const applicationLink = (applicationId: string) => {
-    return `/application/${applicationId}`;
-  };
-  const applicationById = (applicationId) => {
-    return loaderData.applications.find((application) => application.id == applicationId);
-  };
   return (
     <div className="category-page">
       <div className="switcher">
@@ -36,8 +31,8 @@ export default function Category({
         <NavLink to={`/category/${params.categorySlug}/updated/1`}>Recently Added</NavLink>
       </div>
       <div className="apps">
-        {loaderData.map((application) => {
-          return <AppCard info={application} />
+        {loaderData.map(application => {
+          return <AppCard info={application} key={application.id} />
         })}
       </div>
       <style>{`

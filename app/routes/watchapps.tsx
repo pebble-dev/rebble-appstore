@@ -1,14 +1,14 @@
-import { NavLink, Link, data } from 'react-router';
-import Markdown from 'react-markdown'
-import type { Route } from "./+types/Watchapps";
-import Carousel from "../components/carousel.tsx";
-import AppCard from "../components/app_card.tsx";
-import { mergeMeta } from "../utils/meta.ts"
+import { NavLink, Link } from 'react-router';
+import Carousel from "../components/carousel";
+import AppCard from "../components/app_card";
+import { mergeMeta } from "../utils/meta"
+import type { Route } from './+types/watchapps';
+import type { CollectionOverview } from '~/types/AppstoreApi';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/apps`);
   const watchapps = await res.json();
-  return watchapps;
+  return watchapps as CollectionOverview;
 }
 
 export const handle = {
@@ -24,10 +24,10 @@ export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
 export default function Watchapps({
   loaderData,
 }: Route.ComponentProps) {
-  const applicationLink = (applicationId) => {
+  const applicationLink = (applicationId: string) => {
     return `/application/${applicationId}`;
   };
-  const applicationById = (applicationId) => {
+  const applicationById = (applicationId: string) => {
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
@@ -65,7 +65,7 @@ export default function Watchapps({
             <div className="apps">
               {collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
-                return <AppCard info={application} />
+                return <AppCard info={application} key={applicationId} />
               })}
             </div>
           </div>

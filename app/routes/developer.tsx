@@ -1,7 +1,9 @@
-import { NavLink } from 'react-router';
-import type { Route } from "./+types/Developer";
-import AppCard from "../components/app_card.tsx";
-import { mergeMeta } from "../utils/meta.ts"
+import { data } from "react-router";
+import AppCard from "../components/app_card";
+import { mergeMeta } from "../utils/meta"
+import type { Route } from './+types/developer.js';
+import type { Application } from "~/types/AppstoreApi";
+
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/dev/${params.developerId}`);
@@ -9,7 +11,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (developer.data.length == 0) {
     throw data("Record Not Found", { status: 404 });
   }
-  return developer.data;
+  return developer.data as Application[];
 }
 
 export const handle = {
@@ -25,12 +27,6 @@ export const meta: Route.MetaFunction = ({ matches, loaderData }) => mergeMeta(m
 export default function Developer({
   loaderData,
 }: Route.ComponentProps) {
-  const applicationLink = (applicationId) => {
-    return `/application/${applicationId}`;
-  };
-  const applicationById = (applicationId) => {
-    return loaderData.applications.find((application) => application.id == applicationId);
-  };
   return (
     <div className="developer-page">
       <title>{`${loaderData[0].author} | Rebble Appstore`}</title>

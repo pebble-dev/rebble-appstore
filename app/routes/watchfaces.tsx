@@ -1,20 +1,21 @@
 import { NavLink, type UIMatch } from 'react-router';
-import type { Route } from "/+types/Watchfaces";
 import Carousel from '~/components/carousel.js';
 import AppCard from '~/components/app_card.js';
 import { mergeMeta } from '~/utils/meta';
+import type { CollectionOverview } from '~/types/AppstoreApi';
+import type { Route } from './+types/watchfaces';
 
 export async function loader() {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/faces`);
   const watchfaces = await res.json();
-  return watchfaces;
+  return watchfaces as CollectionOverview;
 }
 
 export const handle = {
   type: () => 'watchface',
 };
 
-export const meta: Route.MetaFunction = ({ matches }: { matches: UIMatch[] }) =>
+export const meta: Route.MetaFunction = ({ matches }) =>
   mergeMeta(matches, [
     { title: "Watch faces | Rebble Appstore" },
     { name: "og:title", content: "Watch faces" },
@@ -27,7 +28,7 @@ export default function Watchfaces({
   const applicationLink = (applicationId: string) => {
     return `/application/${applicationId}`;
   };
-  const applicationById = (applicationId) => {
+  const applicationById = (applicationId: string) => {
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
@@ -55,7 +56,7 @@ export default function Watchfaces({
             <div className="apps">
               {collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
-                return <AppCard info={application} />
+                return <AppCard info={application} key={applicationId} />
               })}
             </div>
           </div>

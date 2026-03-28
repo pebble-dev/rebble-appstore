@@ -3,7 +3,7 @@ import Markdown from 'react-markdown'
 import type { Route } from "./+types/application";
 import Carousel from "../components/carousel";
 import { mergeMeta } from "../utils/meta"
-import type { AppBanner, AppScreenshot } from '~/types/Application';
+import type { Application } from "~/types/AppstoreApi";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/id/${params.applicationId}`);
@@ -11,12 +11,11 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (application.data.length == 0) {
     throw data("Record Not Found", { status: 404 });
   }
-  return application.data[0];
+  return application.data[0] as Application;
 }
 
 export const handle = {
-  // TODO: What's the actual type of this?
-  type: (loaderData: { type: string } | undefined) => loaderData ? loaderData.type : '',
+  type: (loaderData: Application | undefined) => { return loaderData ? loaderData.type : '' },
 };
 
 export const meta: Route.MetaFunction = ({ matches, loaderData }) => mergeMeta(matches, [
@@ -34,7 +33,7 @@ export default function Application({
     <div className="application-page">
       {loaderData.header_images &&
         <Carousel>
-          {loaderData.header_images.map((banner: AppBanner) => {
+          {loaderData.header_images.map(banner => {
             return (
               <img draggable="false" className="banner" key={banner['720x320']} src={banner['720x320']} />
             );
@@ -53,7 +52,7 @@ export default function Application({
       <div className="application-content">
         <div className="application-main">
           {/* Figure out the screenshots component, also hardcoded resolution */}
-          {loaderData.screenshot_images.map((screenshot: AppScreenshot) => {
+          {loaderData.screenshot_images.map(screenshot => {
             return (
               <img src={screenshot['144x168']} />
             );

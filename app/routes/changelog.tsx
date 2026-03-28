@@ -1,7 +1,8 @@
-import { NavLink } from 'react-router';
+import { data, NavLink } from 'react-router';
 import Markdown from 'react-markdown'
 import type { Route } from "./+types/changelog";
-import { mergeMeta } from "../utils/meta.ts"
+import { mergeMeta } from "../utils/meta"
+import type { Application } from '~/types/AppstoreApi';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/id/${params.applicationId}`);
@@ -9,11 +10,11 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (application.data.length == 0) {
     throw data("Record Not Found", { status: 404 });
   }
-  return application.data[0];
+  return application.data[0] as Application;
 }
 
 export const handle = {
-  type: (loaderData) => loaderData ? loaderData.type : '',
+  type: (loaderData: { type: string }) => loaderData ? loaderData.type : '',
 };
 
 export const meta: Route.MetaFunction = ({ matches, loaderData }) => mergeMeta(matches, [

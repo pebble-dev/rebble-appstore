@@ -11,8 +11,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import Logo from "./icons/rebble.svg?react";
 import Search from "./icons/search.svg?react";
+import RebbleLogo from "./icons/RebbleLogo";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -55,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <header>
           <brand>
             <NavLink to={watchappsLink}>
-              <Logo />
+              <RebbleLogo />
               <span>Rebble</span>
               <span className="small">appstore</span>
             </NavLink>

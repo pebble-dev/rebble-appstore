@@ -1,16 +1,16 @@
-import { NavLink, Route } from 'react-router';
-import type { Route } from "./+types/Collection";
-import AppCard from "../components/app_card.tsx";
-import { mergeMeta } from "../utils/meta.ts"
+import AppCard from "../components/app_card";
+import { mergeMeta } from "../utils/meta"
+import type { Route } from "./+types/collection";
+import type { Application } from "~/types/AppstoreApi";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/apps/collection/${params.collectionSlug}/${params.type}`);
   const collection = await res.json();
-  return collection.data;
+  return collection.data as Application[];
 }
 
 export const handle = {
-  type: (loaderData) => (loaderData && loaderData.length > 1) ? loaderData[0].type : '',
+  type: (loaderData: { type: string }[]) => (loaderData && loaderData.length > 1) ? loaderData[0].type : '',
 };
 
 export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
@@ -22,12 +22,6 @@ export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
 export default function Collection({
   loaderData,
 }: Route.ComponentProps) {
-  const applicationLink = (applicationId) => {
-    return `/application/${applicationId}`;
-  };
-  const applicationById = (applicationId) => {
-    return loaderData.applications.find((application) => application.id == applicationId);
-  };
   return (
     <div className="collection-page">
       <div className="apps">

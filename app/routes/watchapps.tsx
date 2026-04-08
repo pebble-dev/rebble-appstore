@@ -1,14 +1,14 @@
-import { NavLink, Link, data } from 'react-router';
-import Markdown from 'react-markdown'
-import type { Route } from "./+types/Watchapps";
-import Carousel from "../components/carousel.tsx";
-import AppCard from "../components/app_card.tsx";
-import { mergeMeta } from "../utils/meta.ts"
+import { NavLink, Link } from 'react-router';
+import Carousel from "../components/carousel";
+import AppCard from "../components/app_card";
+import { mergeMeta } from "../utils/meta"
+import type { Route } from './+types/watchapps';
+import type { CollectionOverview } from '~/types/AppstoreApi';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/apps`);
   const watchapps = await res.json();
-  return watchapps;
+  return watchapps as CollectionOverview;
 }
 
 export const handle = {
@@ -24,53 +24,53 @@ export const meta: Route.MetaFunction = ({ matches }) => mergeMeta(matches, [
 export default function Watchapps({
   loaderData,
 }: Route.ComponentProps) {
-  const applicationLink = (applicationId) => {
+  const applicationLink = (applicationId: string) => {
     return `/application/${applicationId}`;
   };
-  const applicationById = (applicationId) => {
+  const applicationById = (applicationId: string) => {
     return loaderData.applications.find((application) => application.id == applicationId);
   };
   return (
-    <div class="home-page">
-      { loaderData.banners.length > 0 &&
+    <div className="home-page">
+      {loaderData.banners.length > 0 &&
         <Carousel>
-        { loaderData.banners.map((banner) => {
-          return (
-            <NavLink to={applicationLink(banner.application_id)} key={banner.application_id}>
-              <img draggable="false"  class="banner" src={ banner.image['720x320'] }/>
-            </NavLink>
-          );
-        }) }
-      </Carousel>
+          {loaderData.banners.map((banner) => {
+            return (
+              <NavLink to={applicationLink(banner.application_id)} key={banner.application_id}>
+                <img draggable="false" className="banner" src={banner.image['720x320']} />
+              </NavLink>
+            );
+          })}
+        </Carousel>
       }
-      <div class="categories">
-        { loaderData.categories.map((category) => {
+      <div className="categories">
+        {loaderData.categories.map((category) => {
           return (
-            <NavLink to={ `/category/${category.slug}` } key={category.slug} style={ { backgroundColor: `rgb(from #${category.color} r g b / 50%)` } }>
-              <img src={ category.icon['88x88'] }/>
+            <NavLink to={`/category/${category.slug}`} key={category.slug} style={{ backgroundColor: `rgb(from #${category.color} r g b / 50%)` }}>
+              <img src={category.icon['88x88']} />
               {category.name}
             </NavLink>
           );
-        }) }
+        })}
       </div>
-      { loaderData.collections.map((collection) => {
+      {loaderData.collections.map((collection) => {
         return (
-          <div class="collection" key={collection.slug}>
-            <div class="name">
+          <div className="collection" key={collection.slug}>
+            <div className="name">
               <NavLink to={`/collection/${collection.slug}/apps/1`}>
                 <h2>{collection.name}</h2>
                 <span>See more</span>
               </NavLink>
             </div>
-            <div class="apps">
-              { collection.application_ids.slice(0, 6).map((applicationId) => {
+            <div className="apps">
+              {collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
-                return <AppCard info={application}/>
-              }) }
+                return <AppCard info={application} key={applicationId} />
+              })}
             </div>
           </div>
         );
-      }) }
+      })}
       <style>{`
         .home-page {
 

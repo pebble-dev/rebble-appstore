@@ -1,19 +1,20 @@
 import { NavLink } from 'react-router';
 import Heart from "../icons/heart.svg?react";
+import type { ApplicationInfo } from "~/types/Application";
 
-export default function AppCard({ info }) {
-  const applicationLink = (applicationId) => {
+export default function AppCard({ info }: { info: ApplicationInfo }) {
+  const applicationLink = (applicationId: string) => {
     return `/application/${applicationId}`;
   };
   return (
-    <div class="app-card">
+    <div className="app-card">
       <NavLink to={applicationLink(info.id)}>
-        <img src={ info.type == 'watchapp' ? info.list_image['144x144'] : info.screenshot_images[0]['144x168'] }/>
-        <div class="info">
-          <div class="title">{ info.title }</div>
-          <div class="author">by { info.author }</div>
-          { info.type == 'watchapp' && <div class="category" style={ { color: `#${info.category_color}` } }>{ info.category }</div> }
-          <div class="hearts"><Heart/> { info.hearts }</div>
+        <img src={info.type == 'watchapp' ? info.list_image['144x144'] : info.screenshot_images[0]['144x168']} />
+        <div className="info">
+          <div className="title">{info.title}</div>
+          <div className="author">by {info.author}</div>
+          {info.type == 'watchapp' && <div className="category" style={{ color: `#${info.category_color}` }}>{info.category}</div>}
+          <div className="hearts"><Heart /> {info.hearts}</div>
         </div>
       </NavLink>
       <style>{`

@@ -1,23 +1,24 @@
-import { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, type Ref, type ReactNode } from "react";
+import type { LayoutProps } from "~/types/LayouProps";
 
-export default function Carousel({ children }) {
+export default function Carousel({ children }: LayoutProps) {
   const [current, setCurrent] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const dragStart = useRef(null);
-  const containerRef = useRef(null);
-  const slideRefs = useRef([]);
+  const dragStart: Ref<number> = useRef(null);
+  const containerRef: Ref<HTMLDivElement> = useRef(null);
+  const slideRefs: Ref<(HTMLDivElement | null)[]> = useRef([]);
 
-  const goTo = useCallback((idx) => {
+  const goTo = useCallback((idx: number) => {
     setCurrent((idx + children.length) % children.length);
   }, []);
 
-  const onPointerDown = (e) => {
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     dragStart.current = e.clientX;
     setIsDragging(true);
   };
 
-  const onPointerMove = (e) => {
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging || dragStart.current === null) return;
     const delta = e.clientX - dragStart.current;
     if (!isDragging && Math.abs(delta) > 5) {
@@ -36,12 +37,12 @@ export default function Carousel({ children }) {
   };
 
   const currentWidth = () => {
-    const baseWidth =  slideRefs.current.slice(0, current).reduce((accumulator, currentValue) => accumulator + currentValue.getBoundingClientRect().width, 0);
+    const baseWidth = slideRefs.current!.slice(0, current).reduce((accumulator, currentValue) => accumulator + (currentValue?.getBoundingClientRect()?.width ?? 0), 0);
 
     if (current == children.length - 1) {
-      return baseWidth + slideRefs.current[current]?.getBoundingClientRect().width - containerRef.current?.getBoundingClientRect().width;
+      return baseWidth + (slideRefs.current![current]?.getBoundingClientRect().width ?? 0) - (containerRef.current?.getBoundingClientRect()?.width ?? 0);
     } else if (current != 0) {
-      return baseWidth + slideRefs.current[current]?.getBoundingClientRect().width / 2 - containerRef.current?.getBoundingClientRect().width / 2;
+      return baseWidth + (slideRefs.current![current]?.getBoundingClientRect().width ?? 0) / 2 - (containerRef.current?.getBoundingClientRect()?.width ?? 0) / 2;
     }
 
     return baseWidth;
@@ -55,33 +56,35 @@ export default function Carousel({ children }) {
 
   return (
     <div>
-      <div class="carousel">
+      <div className="carousel">
 
-        <div class="carousel-viewport">
+        <div className="carousel-viewport">
           <div
-            ref={el => containerRef.current = el}
-            class="carousel-track"
+            ref={containerRef}
+            className="carousel-track"
             style={trackStyle}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
             onPointerLeave={onPointerUp}
           >
-            {children.map((img, i) => (
-              <div key={i} ref={el => slideRefs.current[i] = el} class={ `carousel-slide ${ current == i ? 'current' : '' }` }>
-                { children[i] }
+            {children.map((_: ReactNode, i: number) => (
+              <div key={i}
+                ref={(el) => { slideRefs.current![i] = el }}
+                className={`carousel-slide ${current == i ? 'current' : ''}`}>
+                {children[i]}
               </div>
             ))}
           </div>
         </div>
 
-        { children.length > 1 &&
-          <div class="carousel-dots">
-            {children.map((_, i) => (
+        {children.length > 1 &&
+          <div className="carousel-dots">
+            {children.map((_: ReactNode, i: number) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                class={ `carousel-dot ${ current == i ? 'current' : '' }` }
+                className={`carousel-dot ${current == i ? 'current' : ''}`}
               />
             ))}
           </div>
@@ -105,7 +108,7 @@ export default function Carousel({ children }) {
           user-select: none;
           -webkit-user-select: none;
           gap: 2rem;
-          ${ children.length == 1 && 'justify-content: center' }
+          ${children.length == 1 && 'justify-content: center' }
         }
         .carousel-slide {
           flex-shrink: 0;

@@ -5,14 +5,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useMatches,
   NavLink,
+  useMatch,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import Logo from "./icons/rebble.svg?react";
 import Search from "./icons/search.svg?react";
+import RebbleLogo from "./icons/RebbleLogo";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -35,13 +35,13 @@ export const meta: Route.MetaFunction = () => [
   { name: "og:image", content: "" },
 ];
 
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  const matches = useMatches();
-  const match = matches.at(-1);
-  const type = match.handle?.type?.(match.loaderData) ?? 'watchapp';
+  const match = useMatch("*");
+  const type = match?.pathname.split("/").at(-1) ?? 'watchapps';
   const watchappsLink = `/watchapps`;
   const watchfacesLink = `/watchfaces`;
-  const searchLink = `/search/${type}s/1`;
+  const searchLink = `/search/${type}/1`;
 
   return (
     <html lang="en">
@@ -55,16 +55,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <header>
           <brand>
             <NavLink to={watchappsLink}>
-              <Logo/>
+              <RebbleLogo />
               <span>Rebble</span>
-              <span class="small">appstore</span>
+              <span className="small">appstore</span>
             </NavLink>
           </brand>
           <nav>
-            <nav-item class={ type === 'watchapp' ? "active" : "" }><NavLink to={watchappsLink}>Watch apps</NavLink></nav-item>
-            <nav-item class={ type === 'watchface' ? "active" : "" }><NavLink to={watchfacesLink}>Watch faces</NavLink></nav-item>
+            <NavLink to={watchappsLink}>Watch apps</NavLink>
+            <NavLink to={watchfacesLink}>Watch faces</NavLink>
           </nav>
-          <div class="search"><NavLink to={searchLink}><Search/></NavLink></div>
+          <NavLink className="search" to={searchLink}><Search /></NavLink>
         </header>
         <content>
           {children}

@@ -5,6 +5,9 @@ import { mergeMeta } from "../utils/meta"
 import type { Route } from './+types/watchapps';
 import type { CollectionOverview } from '~/types/AppstoreApi';
 
+/**
+ * Runs before page load and populates loaderData
+ */
 export async function loader({ params }: Route.LoaderArgs) {
   const res = await fetch(`https://appstore-api.rebble.io/api/v1/home/apps`);
   const watchapps = await res.json();
@@ -65,6 +68,10 @@ export default function Watchapps({
             <div className="apps">
               {collection.application_ids.slice(0, 6).map((applicationId) => {
                 const application = applicationById(applicationId);
+                if(!application) {
+                  console.warn(`Application ${applicationId} was in collection.application_ids but as not found in known applications!`)
+                  return <></>
+                }
                 return <AppCard info={application} key={applicationId} />
               })}
             </div>

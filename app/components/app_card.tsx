@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router';
 import Heart from "../icons/heart.svg?react";
-import type { ApplicationInfo } from "~/types/Application";
+import type { Application } from '~/types/AppstoreApi';
 
-export default function AppCard({ info }: { info: ApplicationInfo }) {
+export default function AppCard({ info, horizontal }: { info: Application, horizontal?: true }) {
   const applicationLink = (applicationId: string) => {
     return `/application/${applicationId}`;
   };
   return (
-    <div className="app-card">
+    <div className={`app-card ${horizontal ? 'horizontal' : ''}`}>
       <NavLink to={applicationLink(info.id)}>
         <img src={info.type == 'watchapp' ? info.list_image['144x144'] : info.screenshot_images[0]['144x168']} />
         <div className="info">
@@ -35,7 +35,8 @@ export default function AppCard({ info }: { info: ApplicationInfo }) {
         }
         .app-card a .info {
           text-align: center;
-          max-width: 100%
+          max-width: 100%;
+          flex-grow: 999;
         }
         .app-card a .info .title {
           font-weight: 600;
@@ -47,6 +48,14 @@ export default function AppCard({ info }: { info: ApplicationInfo }) {
         }
         .app-card a .info .hearts {
           color: var(--as-fg-muted)
+        }
+
+        .app-card.horizontal a {
+          flex-direction: row;
+        }
+
+        .app-card.horizontal a .info {
+          text-align: left;
         }
       `}</style>
     </div>
